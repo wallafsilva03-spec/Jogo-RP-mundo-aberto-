@@ -30,8 +30,8 @@ O desenvolvimento é incremental. Cada etapa só avança após aprovação.
 
 | Etapa | Entrega | Status |
 |------:|---------|:------:|
-| **1** | Menu inicial (logo, Jogar, Configurações, Créditos) | ✅ **atual** |
-| 2 | Criação de personagem (nome, sexo, cor de roupa/pele) | ⏳ |
+| **1** | Menu inicial (logo, Jogar, Configurações, Créditos) | ✅ |
+| **2** | Criação de personagem (nome, sexo, cor de roupa/pele) + preview 3D | ✅ **atual** |
 | 3 | Escolha de profissão (cards, descrição, dificuldade, renda) | ⏳ |
 | 4 | Mundo 3D + personagem + HUD + missões | ⏳ |
 
@@ -46,11 +46,14 @@ via `FEATURES` em `config.js`).
 ```
 index.html      → shell da página, import map do Three.js
 style.css       → design system (glassmorphism, animações, variáveis)
-config.js       → constantes: telas, economia, profissões, feature flags
+config.js       → constantes: telas, economia, profissões, paletas, flags
 storage.js      → persistência (LocalStorage hoje, API amanhã)
+state.js        → estado global (economia + personagem)
 ui.js           → EventBus, ScreenManager, toast, modal, helper de DOM
-scene.js        → cena 3D de fundo do menu (Three.js)
-main.js         → bootstrap, estado global e a tela do Menu (Etapa 1)
+scene.js        → cenas 3D: fundo do menu + preview de personagem
+avatar.js       → fábrica de avatar 3D (reusada pelo player na Etapa 4)
+characterCreate.js → tela de criação de personagem   [Etapa 2]
+main.js         → bootstrap, registro de telas e Menu
 player.js       → personagem 3ª pessoa            [Etapa 4]
 camera.js       → câmera orbital de 3ª pessoa      [Etapa 4]
 hud.js          → HUD de jogo                      [Etapa 4]

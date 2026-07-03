@@ -36,6 +36,17 @@ export const DEFAULT_SETTINGS = Object.freeze({
   highQuality: true,
 });
 
+/* Paletas da criação de personagem (Etapa 2).
+   Ficam aqui — sem dependência do Three.js — para poderem ser
+   importadas pela UI sem carregar a engine 3D. */
+export const SKIN_TONES = Object.freeze([
+  "#f5d0a9", "#e8b98c", "#c9926b", "#a26b45", "#7a4b2b", "#5a3620",
+]);
+export const OUTFIT_COLORS = Object.freeze([
+  "#10b981", "#2563eb", "#ef4444", "#f59e0b", "#8b5cf6", "#ec4899",
+  "#14b8a6", "#e5e7eb", "#1f2937",
+]);
+
 /* Profissões — dados de catálogo (usados na etapa 3). */
 export const JOBS = Object.freeze([
   { id: "caminhoneiro", emoji: "🚛", name: "Caminhoneiro", difficulty: 3, income: "R$ 3.500 – R$ 8.000",

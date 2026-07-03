@@ -6,42 +6,13 @@
    Etapa 1: apenas o MENU INICIAL.
    ============================================================ */
 
-import { GAME, SCREENS, ECONOMY } from "./config.js";
+import { GAME, SCREENS } from "./config.js";
 import { Storage } from "./storage.js";
 import { bus, el, screens, toast, openModal } from "./ui.js";
+import { GameState } from "./state.js";
+import { CharacterCreateScreen } from "./characterCreate.js";
 // scene.js (Three.js) é carregado sob demanda no boot() para que uma
 // eventual falha de rede no CDN nunca bloqueie a interface do menu.
-
-/* ============================================================
-   ESTADO GLOBAL (economia em memória + persistência)
-   ============================================================ */
-const GameState = {
-  data: {
-    character: null,       // { name, sex, skin, outfit } — Etapa 2
-    job: null,             // id da profissão — Etapa 3
-    money: ECONOMY.startMoney,
-    xp: ECONOMY.startXp,
-    level: ECONOMY.startLevel,
-  },
-  settings: Storage.loadSettings(),
-
-  load() {
-    const save = Storage.loadSave();
-    if (save) Object.assign(this.data, save);
-    return !!save;
-  },
-  save() {
-    Storage.writeSave(this.data);
-    bus.emit("state:saved", this.data);
-  },
-  reset() {
-    Storage.clearSave();
-    this.data = {
-      character: null, job: null,
-      money: ECONOMY.startMoney, xp: ECONOMY.startXp, level: ECONOMY.startLevel,
-    };
-  },
-};
 
 // exposto para depuração no console
 window.BrasilOnline = { GameState, bus, GAME };
@@ -150,19 +121,18 @@ function MenuScreen() {
 function onPlay(hasSave) {
   if (hasSave) {
     GameState.load();
-    // Etapa 2+: retomar de onde parou. Por enquanto, aviso.
-    toast(`Bem-vindo de volta, ${GameState.data.character?.name || "jogador"}!`);
-    toast("Criação de personagem chega na Etapa 2 🚧", 3200);
-  } else {
-    onNewGame();
+    if (GameState.data.character?.name) {
+      toast(`Bem-vindo de volta, ${GameState.data.character.name}!`);
+    }
   }
+  // Segue para a criação de personagem (prefilled se houver save).
+  screens.show(SCREENS.CREATE_CHARACTER);
 }
 
 function onNewGame() {
-  // Etapa 2 abrirá a tela de criação de personagem:
-  //   screens.show(SCREENS.CREATE_CHARACTER)
+  GameState.reset();
   toast("Iniciando nova jornada…");
-  toast("A criação de personagem chega na Etapa 2 🚧", 3200);
+  screens.show(SCREENS.CREATE_CHARACTER);
 }
 
 /* ---------------- Modal: Configurações ---------------- */
@@ -257,8 +227,9 @@ function openCredits() {
    BOOTSTRAP
    ============================================================ */
 function boot() {
-  // Registra as telas (Etapa 1: apenas o menu)
+  // Registra as telas disponíveis
   screens.register(SCREENS.MENU, MenuScreen);
+  screens.register(SCREENS.CREATE_CHARACTER, CharacterCreateScreen);
 
   // Esconde a tela de boot e exibe o menu
   const bootEl = document.getElementById("boot");

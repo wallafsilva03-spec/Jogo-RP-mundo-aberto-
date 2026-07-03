@@ -76,6 +76,10 @@ class ScreenManager {
     return this;
   }
 
+  has(key) {
+    return this.screens.has(key);
+  }
+
   async show(key, ctx = {}) {
     const factory = this.screens.get(key);
     if (!factory) throw new Error(`Tela não registrada: ${key}`);

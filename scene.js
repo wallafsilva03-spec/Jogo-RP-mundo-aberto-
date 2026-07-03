@@ -8,6 +8,169 @@
    ============================================================ */
 
 import * as THREE from "three";
+import { buildAvatar } from "./avatar.js";
+
+/* ============================================================
+   CharacterPreview — palco 3D para a criação de personagem
+   (Etapa 2). Mostra o avatar num pedestal, girando, com luz de
+   estúdio. Atualiza cor de pele/roupa em tempo real.
+   ============================================================ */
+export class CharacterPreview {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.clock = new THREE.Clock();
+    this._raf = null;
+    this._onResize = this.resize.bind(this);
+    this._dragging = false;
+    this._yaw = 0;
+    this._autoRotate = true;
+    this._init();
+  }
+
+  _init() {
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this._sizeToCanvas();
+    this.renderer.setClearColor(0x000000, 0);
+
+    this.scene = new THREE.Scene();
+
+    this.camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+    this.camera.position.set(0, 1.5, 5.2);
+    this.camera.lookAt(0, 1.05, 0);
+
+    this._addLights();
+    this._addStage();
+
+    this.pivot = new THREE.Group();
+    this.scene.add(this.pivot);
+    this.setAppearance({});
+
+    this._bindDrag();
+    window.addEventListener("resize", this._onResize);
+    this._loop();
+  }
+
+  _addLights() {
+    this.scene.add(new THREE.HemisphereLight(0xbcd6ff, 0x0a0e17, 0.9));
+
+    const key = new THREE.DirectionalLight(0xffffff, 2.2);
+    key.position.set(3, 6, 4);
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    key.shadow.camera.near = 1;
+    key.shadow.camera.far = 20;
+    this.scene.add(key);
+
+    const rim = new THREE.DirectionalLight(0x10b981, 1.6);
+    rim.position.set(-4, 3, -3);
+    this.scene.add(rim);
+
+    const fill = new THREE.PointLight(0xfbbf24, 0.7, 20);
+    fill.position.set(2, 1, 3);
+    this.scene.add(fill);
+  }
+
+  _addStage() {
+    // Pedestal circular
+    const disc = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.5, 1.6, 0.14, 48),
+      new THREE.MeshStandardMaterial({ color: 0x121a2b, roughness: 0.6, metalness: 0.3 })
+    );
+    disc.position.y = -0.07;
+    disc.receiveShadow = true;
+    this.scene.add(disc);
+
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(1.5, 0.03, 16, 64),
+      new THREE.MeshStandardMaterial({
+        color: 0x10b981, emissive: 0x10b981, emissiveIntensity: 0.8, roughness: 0.4,
+      })
+    );
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = 0.02;
+    this.scene.add(ring);
+  }
+
+  /** (Re)constrói o avatar com a aparência dada. */
+  setAppearance(appearance) {
+    this._appearance = { ...(this._appearance || {}), ...appearance };
+    if (this.avatar) {
+      this.pivot.remove(this.avatar.group);
+      this.avatar.group.traverse((o) => {
+        if (o.geometry) o.geometry.dispose();
+      });
+    }
+    this.avatar = buildAvatar(this._appearance);
+    this.pivot.add(this.avatar.group);
+  }
+
+  /** Troca só as cores (sem reconstruir a geometria). */
+  applyColors(colors) {
+    this._appearance = { ...(this._appearance || {}), ...colors };
+    this.avatar?.apply(colors);
+  }
+
+  _bindDrag() {
+    const c = this.canvas;
+    const down = (x) => { this._dragging = true; this._lastX = x; this._autoRotate = false; };
+    const move = (x) => {
+      if (!this._dragging) return;
+      this._yaw += (x - this._lastX) * 0.01;
+      this._lastX = x;
+    };
+    const up = () => { this._dragging = false; };
+
+    c.addEventListener("mousedown", (e) => down(e.clientX));
+    window.addEventListener("mousemove", (e) => move(e.clientX));
+    window.addEventListener("mouseup", up);
+    c.addEventListener("touchstart", (e) => down(e.touches[0].clientX), { passive: true });
+    c.addEventListener("touchmove", (e) => move(e.touches[0].clientX), { passive: true });
+    c.addEventListener("touchend", up);
+    this._dragHandlers = { move, up };
+  }
+
+  _loop() {
+    const dt = this.clock.getDelta();
+    if (this._autoRotate) this._yaw += dt * 0.5;
+    if (this.pivot) this.pivot.rotation.y = this._yaw;
+    this.renderer.render(this.scene, this.camera);
+    this._raf = requestAnimationFrame(() => this._loop());
+  }
+
+  _sizeToCanvas() {
+    const r = this.canvas.getBoundingClientRect();
+    const w = Math.max(1, r.width), h = Math.max(1, r.height);
+    this.renderer.setSize(w, h, false);
+    if (this.camera) {
+      this.camera.aspect = w / h;
+      this.camera.updateProjectionMatrix();
+    }
+  }
+
+  resize() { this._sizeToCanvas(); }
+
+  dispose() {
+    cancelAnimationFrame(this._raf);
+    window.removeEventListener("resize", this._onResize);
+    if (this._dragHandlers) {
+      window.removeEventListener("mousemove", this._dragHandlers.move);
+      window.removeEventListener("mouseup", this._dragHandlers.up);
+    }
+    this.scene.traverse((o) => {
+      if (o.geometry) o.geometry.dispose();
+      if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => m.dispose());
+    });
+    this.renderer.dispose();
+  }
+}
 
 export class MenuScene {
   constructor(canvas) {

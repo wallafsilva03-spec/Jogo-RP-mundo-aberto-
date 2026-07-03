@@ -12,6 +12,7 @@ import { bus, el, screens, toast, openModal } from "./ui.js";
 import { GameState } from "./state.js";
 import { CharacterCreateScreen } from "./characterCreate.js";
 import { ChooseJobScreen } from "./chooseJob.js";
+import { WorldScreen } from "./world.js";
 // scene.js (Three.js) é carregado sob demanda no boot() para que uma
 // eventual falha de rede no CDN nunca bloqueie a interface do menu.
 
@@ -122,11 +123,12 @@ function MenuScreen() {
 function onPlay(hasSave) {
   if (hasSave) {
     GameState.load();
-    if (GameState.data.character?.name) {
-      toast(`Bem-vindo de volta, ${GameState.data.character.name}!`);
-    }
+    const d = GameState.data;
+    if (d.character?.name) toast(`Bem-vindo de volta, ${d.character.name}!`);
+    // retoma de onde parou
+    if (d.character?.name && d.job) return screens.show(SCREENS.WORLD);
+    if (d.character?.name) return screens.show(SCREENS.CHOOSE_JOB);
   }
-  // Segue para a criação de personagem (prefilled se houver save).
   screens.show(SCREENS.CREATE_CHARACTER);
 }
 
@@ -232,6 +234,7 @@ function boot() {
   screens.register(SCREENS.MENU, MenuScreen);
   screens.register(SCREENS.CREATE_CHARACTER, CharacterCreateScreen);
   screens.register(SCREENS.CHOOSE_JOB, ChooseJobScreen);
+  screens.register(SCREENS.WORLD, WorldScreen);
 
   // Esconde a tela de boot e exibe o menu
   const bootEl = document.getElementById("boot");

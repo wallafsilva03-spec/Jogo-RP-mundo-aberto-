@@ -14,12 +14,11 @@
   />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Three.js via ES Module Import Map (preparado para o mapa 3D nas próximas etapas) -->
+  <!-- Three.js vendorizado localmente (offline, sem CDN) via Import Map -->
   <script type="importmap">
     {
       "imports": {
-        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        "three": "./vendor/three/three.module.js"
       }
     }
   </script>

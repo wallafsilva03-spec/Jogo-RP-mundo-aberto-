@@ -22,6 +22,12 @@ npx serve .
 
 Depois acesse: <http://localhost:8080>
 
+> O Three.js é **vendorizado** em `vendor/three/` — o jogo roda **offline**,
+> sem depender de CDN.
+
+### Controles (Etapa 4 — mundo 3D)
+- **WASD** — andar · **Mouse** (segurar/clicar) — girar a câmera · **Scroll** — zoom · **Esc** — voltar ao menu
+
 ---
 
 ## 🧭 Roadmap por etapas
@@ -32,8 +38,8 @@ O desenvolvimento é incremental. Cada etapa só avança após aprovação.
 |------:|---------|:------:|
 | **1** | Menu inicial (logo, Jogar, Configurações, Créditos) | ✅ |
 | **2** | Criação de personagem (nome, sexo, cor de roupa/pele) + preview 3D | ✅ |
-| **3** | Escolha de profissão (cards, descrição, dificuldade, renda) | ✅ **atual** |
-| 4 | Mundo 3D + personagem + HUD + missões | ⏳ |
+| **3** | Escolha de profissão (cards, descrição, dificuldade, renda) | ✅ |
+| **4** | Mundo 3D + personagem jogável + HUD + missões | ✅ **atual** |
 
 > 🎨 **Estilo visual:** a partir da Etapa 2 o jogo adota uma direção de arte
 > inspirada em **Studio Ghibli** — céu em aquarela, nuvens, colinas, cards em
@@ -60,11 +66,14 @@ scene.js        → cenas 3D: fundo do menu + preview de personagem
 avatar.js       → avatar 3D cel-shaded (reusado pelo player na Etapa 4)
 characterCreate.js → tela de criação de personagem   [Etapa 2]
 chooseJob.js    → tela de escolha de profissão        [Etapa 3]
+world.js        → tela do mundo 3D (orquestra tudo)   [Etapa 4]
+city.js         → cidade 3D (ruas, prédios, NPCs…)    [Etapa 4]
+player.js       → personagem jogável 3ª pessoa (WASD) [Etapa 4]
+camera.js       → câmera orbital de 3ª pessoa         [Etapa 4]
+hud.js          → HUD (nome, dinheiro, XP, minimapa…) [Etapa 4]
+missions.js     → motor de missões por profissão      [Etapa 4]
 main.js         → bootstrap, registro de telas e Menu
-player.js       → personagem 3ª pessoa            [Etapa 4]
-camera.js       → câmera orbital de 3ª pessoa      [Etapa 4]
-hud.js          → HUD de jogo                      [Etapa 4]
-missions.js     → motor de missões                 [Etapa 4]
+vendor/three/   → Three.js vendorizado (offline, sem CDN)
 assets/         → models, textures, sounds
 ```
 

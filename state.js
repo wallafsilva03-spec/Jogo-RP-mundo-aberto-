@@ -9,6 +9,11 @@ import { ECONOMY } from "./config.js";
 import { Storage } from "./storage.js";
 import { bus } from "./ui.js";
 
+/** XP total necessário para alcançar o nível seguinte. */
+export function xpForNext(level) {
+  return level * ECONOMY.xpPerLevel;
+}
+
 function freshData() {
   return {
     character: null, // { name, sex, skin, outfit } — Etapa 2
@@ -46,6 +51,24 @@ export const GameState = {
     this.data.job = jobId;
     this.save();
     bus.emit("job:changed", jobId);
+  },
+
+  /** Aplica recompensa de missão: dinheiro + XP, com subida de nível. */
+  addReward({ money = 0, xp = 0 } = {}) {
+    this.data.money += money;
+    this.data.xp += xp;
+
+    let leveledUp = false;
+    while (this.data.xp >= xpForNext(this.data.level)) {
+      this.data.xp -= xpForNext(this.data.level);
+      this.data.level += 1;
+      leveledUp = true;
+    }
+
+    this.save();
+    bus.emit("economy:changed", this.data);
+    if (leveledUp) bus.emit("level:up", this.data.level);
+    return leveledUp;
   },
 
   reset() {

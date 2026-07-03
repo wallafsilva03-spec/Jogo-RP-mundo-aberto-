@@ -41,6 +41,13 @@ export const GameState = {
     bus.emit("character:changed", this.data.character);
   },
 
+  /** Define a profissão escolhida e persiste (Etapa 3). */
+  setJob(jobId) {
+    this.data.job = jobId;
+    this.save();
+    bus.emit("job:changed", jobId);
+  },
+
   reset() {
     Storage.clearSave();
     this.data = freshData();

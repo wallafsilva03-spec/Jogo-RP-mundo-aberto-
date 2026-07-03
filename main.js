@@ -11,6 +11,7 @@ import { Storage } from "./storage.js";
 import { bus, el, screens, toast, openModal } from "./ui.js";
 import { GameState } from "./state.js";
 import { CharacterCreateScreen } from "./characterCreate.js";
+import { ChooseJobScreen } from "./chooseJob.js";
 // scene.js (Three.js) é carregado sob demanda no boot() para que uma
 // eventual falha de rede no CDN nunca bloqueie a interface do menu.
 
@@ -230,6 +231,7 @@ function boot() {
   // Registra as telas disponíveis
   screens.register(SCREENS.MENU, MenuScreen);
   screens.register(SCREENS.CREATE_CHARACTER, CharacterCreateScreen);
+  screens.register(SCREENS.CHOOSE_JOB, ChooseJobScreen);
 
   // Esconde a tela de boot e exibe o menu
   const bootEl = document.getElementById("boot");

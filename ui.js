@@ -111,6 +111,33 @@ export const screens = new ScreenManager("app");
 /* ---------------- Utilitário de espera ---------------- */
 export const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/* ---------------- Céu Ghibli (fundo reutilizável) ----------------
+   Céu em aquarela, sol quente, nuvens fofas flutuando e colinas.
+   Usado como plano de fundo das telas com tema Ghibli. */
+export function ghibliSky() {
+  const clouds = [
+    "cloud--a", "cloud--b", "cloud--c", "cloud--d", "cloud--e",
+  ].map((c) => el(`div.cloud.${c}`, {}, el("span"), el("span"), el("span")));
+
+  const hills = el("div.hills", {
+    html: `
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true">
+        <path class="hill hill-3" d="M0,220 C240,150 420,190 720,170 C1020,150 1200,200 1440,160 L1440,320 L0,320 Z"/>
+        <path class="hill hill-2" d="M0,260 C260,210 520,250 780,225 C1040,200 1260,255 1440,220 L1440,320 L0,320 Z"/>
+        <path class="hill hill-1" d="M0,300 C300,265 560,295 860,278 C1120,262 1300,300 1440,285 L1440,320 L0,320 Z"/>
+      </svg>`,
+  });
+
+  return el(
+    "div.sky",
+    { "aria-hidden": "true" },
+    el("div.sun"),
+    el("div.birds", { html: "<span>ᨒ</span><span>ᨒ</span><span>ᨒ</span>" }),
+    ...clouds,
+    hills
+  );
+}
+
 /* ---------------- Toast ---------------- */
 let toastWrap = null;
 export function toast(message, ms = 2600) {

@@ -31,9 +31,15 @@ O desenvolvimento é incremental. Cada etapa só avança após aprovação.
 | Etapa | Entrega | Status |
 |------:|---------|:------:|
 | **1** | Menu inicial (logo, Jogar, Configurações, Créditos) | ✅ |
-| **2** | Criação de personagem (nome, sexo, cor de roupa/pele) + preview 3D | ✅ **atual** |
-| 3 | Escolha de profissão (cards, descrição, dificuldade, renda) | ⏳ |
+| **2** | Criação de personagem (nome, sexo, cor de roupa/pele) + preview 3D | ✅ |
+| **3** | Escolha de profissão (cards, descrição, dificuldade, renda) | ✅ **atual** |
 | 4 | Mundo 3D + personagem + HUD + missões | ⏳ |
+
+> 🎨 **Estilo visual:** a partir da Etapa 2 o jogo adota uma direção de arte
+> inspirada em **Studio Ghibli** — céu em aquarela, nuvens, colinas, cards em
+> tom creme, tipografia storybook (Fraunces + Nunito) e avatar 3D com
+> cel-shading e contorno. O tema fica na classe `.theme-ghibli` (`style.css`)
+> e no céu reutilizável `ghibliSky()` (`ui.js`).
 
 ---
 
@@ -51,8 +57,9 @@ storage.js      → persistência (LocalStorage hoje, API amanhã)
 state.js        → estado global (economia + personagem)
 ui.js           → EventBus, ScreenManager, toast, modal, helper de DOM
 scene.js        → cenas 3D: fundo do menu + preview de personagem
-avatar.js       → fábrica de avatar 3D (reusada pelo player na Etapa 4)
+avatar.js       → avatar 3D cel-shaded (reusado pelo player na Etapa 4)
 characterCreate.js → tela de criação de personagem   [Etapa 2]
+chooseJob.js    → tela de escolha de profissão        [Etapa 3]
 main.js         → bootstrap, registro de telas e Menu
 player.js       → personagem 3ª pessoa            [Etapa 4]
 camera.js       → câmera orbital de 3ª pessoa      [Etapa 4]

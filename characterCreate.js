@@ -7,7 +7,7 @@
 
 import { SCREENS, SKIN_TONES, OUTFIT_COLORS } from "./config.js";
 import { GameState } from "./state.js";
-import { bus, el, screens, toast } from "./ui.js";
+import { bus, el, screens, toast, ghibliSky } from "./ui.js";
 
 export function CharacterCreateScreen() {
   let preview = null;
@@ -180,8 +180,8 @@ export function CharacterCreateScreen() {
       validate();
       setTimeout(() => nameInput.focus(), 500);
 
-      // wrapper de tela centralizado
-      return el("div.screen--center", {}, root);
+      // wrapper de tela centralizado, com tema Ghibli + céu ao fundo
+      return el("div.screen--center.theme-ghibli", {}, ghibliSky(), root);
     },
 
     unmount() {

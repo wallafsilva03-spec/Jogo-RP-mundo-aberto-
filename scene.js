@@ -59,44 +59,63 @@ export class CharacterPreview {
   }
 
   _addLights() {
-    this.scene.add(new THREE.HemisphereLight(0xbcd6ff, 0x0a0e17, 0.9));
+    // céu quente em cima, verde reflexo do gramado embaixo
+    this.scene.add(new THREE.HemisphereLight(0xfff2d6, 0x8bbf6a, 1.1));
 
-    const key = new THREE.DirectionalLight(0xffffff, 2.2);
-    key.position.set(3, 6, 4);
-    key.castShadow = true;
-    key.shadow.mapSize.set(1024, 1024);
-    key.shadow.camera.near = 1;
-    key.shadow.camera.far = 20;
-    this.scene.add(key);
+    const sun = new THREE.DirectionalLight(0xfff0c9, 2.0);
+    sun.position.set(3.5, 6, 4);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    sun.shadow.camera.near = 1;
+    sun.shadow.camera.far = 20;
+    sun.shadow.radius = 6; // sombra macia
+    this.scene.add(sun);
 
-    const rim = new THREE.DirectionalLight(0x10b981, 1.6);
-    rim.position.set(-4, 3, -3);
-    this.scene.add(rim);
-
-    const fill = new THREE.PointLight(0xfbbf24, 0.7, 20);
-    fill.position.set(2, 1, 3);
+    const fill = new THREE.DirectionalLight(0xbfe3ff, 0.8);
+    fill.position.set(-4, 3, 2);
     this.scene.add(fill);
   }
 
   _addStage() {
-    // Pedestal circular
-    const disc = new THREE.Mesh(
-      new THREE.CylinderGeometry(1.5, 1.6, 0.14, 48),
-      new THREE.MeshStandardMaterial({ color: 0x121a2b, roughness: 0.6, metalness: 0.3 })
+    // Montinho de grama (campina Ghibli)
+    const grass = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.7, 1.9, 0.5, 48),
+      new THREE.MeshToonMaterial({ color: 0x7fb069 })
     );
-    disc.position.y = -0.07;
-    disc.receiveShadow = true;
-    this.scene.add(disc);
+    grass.position.y = -0.27;
+    grass.receiveShadow = true;
+    this.scene.add(grass);
 
-    const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(1.5, 0.03, 16, 64),
-      new THREE.MeshStandardMaterial({
-        color: 0x10b981, emissive: 0x10b981, emissiveIntensity: 0.8, roughness: 0.4,
-      })
+    // Terra na base do montinho
+    const soil = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.9, 2.0, 0.22, 48),
+      new THREE.MeshToonMaterial({ color: 0x9c6b43 })
     );
-    ring.rotation.x = Math.PI / 2;
-    ring.position.y = 0.02;
-    this.scene.add(ring);
+    soil.position.y = -0.6;
+    this.scene.add(soil);
+
+    // Tufos de grama e florzinhas
+    const tuft = new THREE.MeshToonMaterial({ color: 0x6a9955 });
+    const flowers = [0xffd166, 0xef8fb0, 0xffffff];
+    for (let i = 0; i < 14; i++) {
+      const ang = (i / 14) * Math.PI * 2;
+      const r = 1.25 + Math.random() * 0.35;
+      const x = Math.cos(ang) * r;
+      const z = Math.sin(ang) * r;
+      if (i % 3 === 0) {
+        const f = new THREE.Mesh(
+          new THREE.SphereGeometry(0.06, 8, 8),
+          new THREE.MeshToonMaterial({ color: flowers[i % flowers.length] })
+        );
+        f.position.set(x, 0.04, z);
+        this.scene.add(f);
+      } else {
+        const g = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.22, 5), tuft);
+        g.position.set(x, 0.05, z);
+        g.rotation.z = (Math.random() - 0.5) * 0.3;
+        this.scene.add(g);
+      }
+    }
   }
 
   /** (Re)constrói o avatar com a aparência dada. */

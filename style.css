@@ -787,6 +787,406 @@ button {
   }
 }
 
+/* ============================================================
+   TEMA GHIBLI — paleta quente, céu em aquarela, storybook
+   Aplicado às telas com a classe .theme-ghibli (Etapas 2, 3, …)
+   ============================================================ */
+.theme-ghibli {
+  --g-cream: #fbf3df;
+  --g-cream-2: #f4e8cc;
+  --g-cream-3: #efe0bf;
+  --g-ink: #4a3f33;
+  --g-ink-soft: #8a7a63;
+  --g-line: rgba(74, 63, 51, 0.16);
+  --g-line-strong: rgba(74, 63, 51, 0.30);
+  --g-green: #6ba368;
+  --g-green-2: #57905a;
+  --g-terra: #e08a5f;
+  --g-terra-2: #d16f45;
+  --g-sun: #f4b942;
+  --g-sky-blue: #6fb1d6;
+  --g-shadow: 0 18px 40px rgba(90, 70, 45, 0.22);
+  --g-shadow-sm: 0 8px 20px rgba(90, 70, 45, 0.16);
+
+  color: var(--g-ink);
+  font-family: "Nunito", system-ui, sans-serif;
+}
+
+/* ---------- Céu (fundo reutilizável) ---------- */
+.sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  background: linear-gradient(180deg,
+    #7ec8ec 0%, #a6dcee 34%, #d8eee0 62%, #f7ead0 84%, #fbe6c2 100%);
+}
+
+.sun {
+  position: absolute;
+  top: 8%;
+  right: 12%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #fffaf0, #ffe6a6 70%, #ffd884);
+  box-shadow: 0 0 70px 26px rgba(255, 226, 150, 0.55);
+  animation: sun-breathe 8s ease-in-out infinite;
+}
+@keyframes sun-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 70px 26px rgba(255, 226, 150, 0.55); }
+  50% { transform: scale(1.05); box-shadow: 0 0 90px 34px rgba(255, 226, 150, 0.65); }
+}
+
+/* Nuvens fofas feitas com box-shadow */
+.cloud {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #fffdf8;
+  border-radius: 50%;
+  box-shadow:
+    24px 10px 0 -4px #fffdf8,
+    52px 2px 0 -6px #fffdf8,
+    -24px 12px 0 -6px #fffdf8,
+    18px 20px 0 -2px #fffdf8;
+  filter: drop-shadow(0 12px 10px rgba(120, 140, 160, 0.16));
+  opacity: 0.95;
+  will-change: transform;
+}
+.cloud span { display: none; }
+.cloud--a { top: 14%; transform: scale(1.2); animation: drift 46s linear infinite; }
+.cloud--b { top: 26%; transform: scale(0.8); animation: drift 64s linear infinite; animation-delay: -20s; }
+.cloud--c { top: 40%; transform: scale(1.5); animation: drift 80s linear infinite; animation-delay: -50s; opacity: 0.8; }
+.cloud--d { top: 9%;  transform: scale(0.65); animation: drift 58s linear infinite; animation-delay: -35s; }
+.cloud--e { top: 33%; transform: scale(1.0); animation: drift 72s linear infinite; animation-delay: -10s; }
+@keyframes drift {
+  from { left: -12vw; }
+  to   { left: 112vw; }
+}
+
+.birds {
+  position: absolute;
+  top: 20%;
+  left: 8%;
+  color: rgba(70, 82, 92, 0.5);
+  font-size: 16px;
+  letter-spacing: 10px;
+  animation: drift 90s linear infinite;
+  animation-delay: -30s;
+}
+
+/* Colinas ao fundo */
+.hills {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46%;
+  min-height: 220px;
+}
+.hills svg { width: 100%; height: 100%; display: block; }
+.hill-3 { fill: #a9cf92; }
+.hill-2 { fill: #82b56e; }
+.hill-1 { fill: #5f9350; }
+
+/* ---------- Overrides Ghibli para a criação de personagem ---------- */
+.theme-ghibli .cc { position: relative; z-index: 1; }
+
+.theme-ghibli .cc__stage {
+  border: 3px solid #fffdf8;
+  border-radius: 30px;
+  background: linear-gradient(180deg, #bfe6f5 0%, #d9eee2 55%, #eef2d8 100%);
+  box-shadow: var(--g-shadow);
+}
+
+.theme-ghibli .cc__panel {
+  border-radius: 30px;
+  background: var(--g-cream);
+  border: 3px solid #fffdf8;
+  box-shadow: var(--g-shadow);
+  backdrop-filter: none;
+}
+/* leve textura de papel */
+.theme-ghibli .cc__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 27px;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(120, 90, 50, 0.05) 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.6;
+}
+
+.theme-ghibli .cc__badge,
+.theme-ghibli .cc__drag {
+  background: rgba(255, 253, 248, 0.8);
+  border: 2px solid #fff;
+  color: var(--g-ink);
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  box-shadow: var(--g-shadow-sm);
+  backdrop-filter: none;
+}
+.theme-ghibli .cc__badge { color: var(--g-green-2); }
+.theme-ghibli .cc__drag { color: var(--g-ink-soft); }
+
+.theme-ghibli .cc__back { color: var(--g-ink-soft); }
+.theme-ghibli .cc__back:hover { color: var(--g-ink); }
+
+.theme-ghibli .cc__title {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  color: var(--g-ink);
+}
+.theme-ghibli .cc__sub { color: var(--g-ink-soft); }
+
+.theme-ghibli .field__label { color: var(--g-ink-soft); }
+
+.theme-ghibli .field__input {
+  background: #fffdf8;
+  border: 2px solid var(--g-line);
+  color: var(--g-ink);
+  font-family: "Nunito", sans-serif;
+  border-radius: 16px;
+}
+.theme-ghibli .field__input::placeholder { color: #b9a888; }
+.theme-ghibli .field__input:focus {
+  border-color: var(--g-green);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(107, 163, 104, 0.18);
+}
+
+.theme-ghibli .segmented {
+  background: #fffdf8;
+  border: 2px solid var(--g-line);
+  border-radius: 18px;
+}
+.theme-ghibli .segmented__opt { color: var(--g-ink-soft); border-radius: 14px; }
+.theme-ghibli .segmented__opt.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--g-green), var(--g-green-2));
+  box-shadow: 0 6px 16px rgba(107, 163, 104, 0.4);
+}
+.theme-ghibli .segmented__opt:not(.active):hover { background: var(--g-cream-2); color: var(--g-ink); }
+
+.theme-ghibli .swatch {
+  border: 3px solid #fffdf8;
+  box-shadow: 0 4px 10px rgba(90, 70, 45, 0.18);
+}
+.theme-ghibli .swatch.active {
+  border-color: var(--g-ink);
+  box-shadow: 0 0 0 3px var(--g-sun), 0 6px 12px rgba(90, 70, 45, 0.22);
+}
+
+.theme-ghibli .cc__hint { color: var(--g-ink-soft); }
+
+/* Botão Ghibli (arredondado, quente) */
+.theme-ghibli .btn {
+  border-radius: 18px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  background: #fffdf8;
+  border: 2px solid var(--g-line);
+  color: var(--g-ink);
+  box-shadow: var(--g-shadow-sm);
+  backdrop-filter: none;
+}
+.theme-ghibli .btn:hover { border-color: var(--g-line-strong); transform: translateY(-2px); }
+.theme-ghibli .btn::before, .theme-ghibli .btn::after { display: none; }
+.theme-ghibli .btn--primary {
+  background: linear-gradient(135deg, var(--g-terra), var(--g-terra-2));
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #fff;
+}
+.theme-ghibli .btn--primary:hover {
+  box-shadow: 0 14px 30px rgba(208, 111, 69, 0.4);
+  transform: translateY(-2px);
+}
+.theme-ghibli .btn--primary .btn__arrow { color: rgba(255, 255, 255, 0.9); }
+
+/* ============================================================
+   ESCOLHA DE PROFISSÃO (Etapa 3) — tema Ghibli
+   ============================================================ */
+.job {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1180px;
+  height: 100%;
+  max-height: 820px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.job__head .cc__back { margin-bottom: 4px; }
+.job__title {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(28px, 3.4vw, 40px);
+  color: var(--g-ink);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.4);
+}
+.job__sub { color: var(--g-ink); opacity: 0.75; font-size: clamp(15px, 1.7vw, 18px); }
+
+.job__layout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.35fr 0.9fr;
+  gap: 20px;
+}
+
+.job__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  align-content: start;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+/* Card de profissão */
+.job-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  text-align: left;
+  border-radius: 22px;
+  background: var(--g-cream);
+  border: 3px solid #fffdf8;
+  box-shadow: var(--g-shadow-sm);
+  transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.28s var(--ease);
+}
+.job-card:hover { transform: translateY(-4px); box-shadow: var(--g-shadow); }
+.job-card.active {
+  border-color: var(--g-green);
+  box-shadow: 0 0 0 3px rgba(107, 163, 104, 0.35), var(--g-shadow);
+}
+
+.job-card__art {
+  flex-shrink: 0;
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #fef1d4, #f6dcae);
+  border: 2px solid #fffdf8;
+  box-shadow: inset 0 -3px 8px rgba(160, 120, 60, 0.15);
+}
+.job-card__emoji { font-size: 34px; line-height: 1; }
+.job-card__body { flex: 1; min-width: 0; }
+.job-card__name {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--g-ink);
+  margin-bottom: 6px;
+}
+.job-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.job-card__diff { display: flex; align-items: center; gap: 6px; }
+.job-card__diff small { color: var(--g-ink-soft); font-size: 12px; font-weight: 700; }
+.job-card__income {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--g-green-2);
+  background: rgba(107, 163, 104, 0.14);
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.job-card__check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--g-green);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.job-card.active .job-card__check { opacity: 1; transform: scale(1); }
+
+/* Pontos de dificuldade */
+.dots { display: inline-flex; gap: 4px; }
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(74, 63, 51, 0.18);
+}
+.dot.on { background: var(--g-terra); }
+
+/* Painel de detalhe */
+.job-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 26px;
+  background: var(--g-cream);
+  border: 3px solid #fffdf8;
+  box-shadow: var(--g-shadow);
+  align-self: start;
+  position: sticky;
+  top: 0;
+}
+.job-detail__head { display: flex; align-items: center; gap: 14px; }
+.job-detail__emoji {
+  width: 66px;
+  height: 66px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 38px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, #fef1d4, #f6dcae);
+  border: 2px solid #fffdf8;
+}
+.job-detail__name {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--g-ink);
+  line-height: 1.1;
+}
+.job-detail__desc { color: var(--g-ink); opacity: 0.82; line-height: 1.55; font-size: 15px; }
+.job-detail__meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 14px;
+  background: #fffdf8;
+  border: 2px solid var(--g-line);
+}
+.chip__label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--g-ink-soft); font-weight: 800; }
+.chip__value { font-weight: 800; color: var(--g-ink); font-size: 14px; }
+.chip--income .chip__value { color: var(--g-green-2); }
+
+.job-detail__start { justify-content: center; margin-top: auto; }
+.job-detail__start.is-disabled { opacity: 0.5; pointer-events: none; filter: grayscale(0.3); }
+
+@media (max-width: 900px) {
+  .job { max-height: none; }
+  .job__layout { grid-template-columns: 1fr; }
+  .job__grid { grid-template-columns: 1fr; }
+  .job-detail { position: static; }
+}
+
 /* ---------- Toast ---------- */
 .toast-wrap {
   position: fixed;

@@ -51,6 +51,7 @@ export function buildCity(scene) {
 
   _scatterHouses(group, landmarks);
   _scatterTrees(group);
+  _scatterFlowers(group);
   _parkedCars(group);
   _spawnNPCs(group, npcs);
 
@@ -85,8 +86,8 @@ function _roadStrip(group, x, z, w, d) {
   side.position.set(x, 0.08, z);
   side.receiveShadow = true;
   group.add(side);
-  // asfalto
-  const road = new THREE.Mesh(new THREE.BoxGeometry(w, 0.2, d), toon("#5b5f68"));
+  // asfalto (cinza quente, como estrada pintada à mão)
+  const road = new THREE.Mesh(new THREE.BoxGeometry(w, 0.2, d), toon("#7d7568"));
   road.position.set(x, 0.11, z);
   road.receiveShadow = true;
   group.add(road);
@@ -229,18 +230,30 @@ function _scatterHouses(group, landmarks) {
 /* ---------------- Árvores ---------------- */
 function _tree(x, z, s = 1) {
   const g = new THREE.Group();
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.4 * s, 0.5 * s, 2.4 * s, 8), toon("#7a5230"));
-  trunk.position.y = 1.2 * s;
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.35 * s, 0.55 * s, 2.6 * s, 8), toon("#8a6238"));
+  trunk.position.y = 1.3 * s;
   trunk.castShadow = true;
   g.add(trunk);
-  const foliageColors = ["#5f9e4f", "#6fb05a", "#4f8a45"];
-  for (let i = 0; i < 3; i++) {
-    const leaf = new THREE.Mesh(new THREE.SphereGeometry((1.6 - i * 0.3) * s, 10, 10), toon(foliageColors[i % 3]));
-    leaf.position.set((Math.random() - 0.5) * s, (2.6 + i * 1.0) * s, (Math.random() - 0.5) * s);
+
+  // copa pintada: camadas achatadas de verdes quentes, do escuro (baixo)
+  // ao claro (topo), como folhagem iluminada pelo sol
+  const tones = ["#4f8a45", "#63a352", "#78b863", "#8fca74"];
+  const layers = 3 + Math.floor(Math.random() * 2);
+  for (let i = 0; i < layers; i++) {
+    const f = i / (layers - 1);
+    const r = (2.2 - f * 1.0) * s;
+    const leaf = new THREE.Mesh(new THREE.SphereGeometry(r, 12, 10), toon(tones[Math.min(i, tones.length - 1)]));
+    leaf.scale.y = 0.62;
+    leaf.position.set(
+      (Math.random() - 0.5) * 0.8 * s,
+      (2.8 + f * 2.2) * s,
+      (Math.random() - 0.5) * 0.8 * s
+    );
     leaf.castShadow = true;
     g.add(leaf);
   }
   g.position.set(x, 0, z);
+  g.rotation.y = Math.random() * Math.PI * 2;
   return g;
 }
 function _scatterTrees(group) {
@@ -253,6 +266,32 @@ function _scatterTrees(group) {
     // mantém livre a área de nascimento do jogador
     if (x * x + (z - 12) * (z - 12) < 260) continue;
     group.add(_tree(x, z, 0.8 + Math.random() * 0.6));
+  }
+}
+
+/* ---------------- Flores na grama ---------------- */
+function _scatterFlowers(group) {
+  const colors = ["#ffd166", "#ef8fb0", "#fffdf8", "#e88a5f", "#b78fe0"];
+  const stemMat = toon("#5f9e4f");
+  for (let c = 0; c < 22; c++) {
+    // canteiros: grupinhos de 4-8 flores
+    const cx = (Math.random() - 0.5) * 190;
+    const cz = (Math.random() - 0.5) * 190;
+    if (Math.abs(cx) < 9 || Math.abs(cz) < 9) continue;
+    if (Math.abs(Math.abs(cx) - 40) < 8 || Math.abs(Math.abs(cz) - 40) < 8) continue;
+    const n = 4 + Math.floor(Math.random() * 5);
+    const color = colors[c % colors.length];
+    for (let i = 0; i < n; i++) {
+      const f = new THREE.Group();
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, 0.5, 5), stemMat);
+      stem.position.y = 0.25;
+      f.add(stem);
+      const bloom = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 8), toon(color));
+      bloom.position.y = 0.55;
+      f.add(bloom);
+      f.position.set(cx + (Math.random() - 0.5) * 3.2, 0, cz + (Math.random() - 0.5) * 3.2);
+      group.add(f);
+    }
   }
 }
 

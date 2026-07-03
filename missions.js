@@ -166,17 +166,18 @@ export class MissionEngine {
 /* Marcador luminoso (pilar + seta flutuante) no destino da missão. */
 function makeBeacon() {
   const g = new THREE.Group();
+  const noOutline = (m) => { m.userData.outlineParameters = { visible: false }; return m; };
 
   const pillar = new THREE.Mesh(
     new THREE.CylinderGeometry(1.1, 1.1, 30, 20, 1, true),
-    new THREE.MeshBasicMaterial({ color: 0xffd15a, transparent: true, opacity: 0.28, side: THREE.DoubleSide, depthWrite: false })
+    noOutline(new THREE.MeshBasicMaterial({ color: 0xffd15a, transparent: true, opacity: 0.28, side: THREE.DoubleSide, depthWrite: false }))
   );
   pillar.position.y = 15;
   g.add(pillar);
 
   const arrow = new THREE.Mesh(
     new THREE.ConeGeometry(1.3, 2.4, 4),
-    new THREE.MeshBasicMaterial({ color: 0xf4b942 })
+    noOutline(new THREE.MeshBasicMaterial({ color: 0xf4b942 }))
   );
   arrow.rotation.x = Math.PI;
   arrow.position.y = 4;
@@ -184,7 +185,7 @@ function makeBeacon() {
 
   const ring = new THREE.Mesh(
     new THREE.TorusGeometry(2.2, 0.18, 12, 32),
-    new THREE.MeshBasicMaterial({ color: 0xf4b942 })
+    noOutline(new THREE.MeshBasicMaterial({ color: 0xf4b942 }))
   );
   ring.rotation.x = Math.PI / 2;
   ring.position.y = 0.3;

@@ -8,7 +8,7 @@
 
 import { GAME, SCREENS } from "./config.js";
 import { Storage } from "./storage.js";
-import { bus, el, screens, toast, openModal } from "./ui.js";
+import { bus, el, screens, toast, openModal, ghibliSky } from "./ui.js";
 import { GameState } from "./state.js";
 import { CharacterCreateScreen } from "./characterCreate.js";
 import { ChooseJobScreen } from "./chooseJob.js";
@@ -112,8 +112,8 @@ function MenuScreen() {
         )
       );
 
-      // wrapper de tela (recebe a classe .screen do ScreenManager)
-      return el("div", {}, menu);
+      // wrapper de tela com tema Ghibli (céu de anime ao fundo)
+      return el("div.theme-ghibli.menu-wrap", {}, ghibliSky(), menu);
     },
   };
 }
@@ -243,21 +243,10 @@ function boot() {
     screens.show(SCREENS.MENU);
   }, 900);
 
-  // Cena 3D de fundo — carregada de forma isolada e assíncrona.
-  // Se o Three.js (CDN) ou o WebGL falharem, o menu continua perfeito.
-  initBackground();
-}
-
-async function initBackground() {
-  const canvas = document.getElementById("bg-canvas");
-  try {
-    const { MenuScene } = await import("./scene.js");
-    window.__menuScene = new MenuScene(canvas);
-  } catch (e) {
-    console.warn("[boot] Fundo 3D indisponível — seguindo com fundo estático.", e);
-    // fallback: gradiente já aplicado via CSS (.ambient-overlay)
-    canvas.style.display = "none";
-  }
+  // O menu agora usa o céu Ghibli (CSS) como fundo — a antiga cena 3D
+  // escura foi aposentada junto com o tema noturno.
+  document.getElementById("bg-canvas")?.remove();
+  document.querySelector(".ambient-overlay")?.remove();
 }
 
 // Garante que o DOM esteja pronto

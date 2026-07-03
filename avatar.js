@@ -52,6 +52,8 @@ export function buildAvatar(appearance = {}) {
 
   const group = new THREE.Group();
   const outlineMat = new THREE.MeshBasicMaterial({ color: OUTLINE, side: THREE.BackSide });
+  // evita traço duplo quando a cena usa OutlineEffect (mundo 3D)
+  outlineMat.userData.outlineParameters = { visible: false };
 
   // Materiais compartilhados (guardados para troca de cor em tempo real)
   const skinMat = toon(a.skin);

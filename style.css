@@ -65,7 +65,8 @@ body {
 
 body {
   font-family: var(--font-ui);
-  background: var(--bg-0);
+  /* céu de anime como cor base (evita flash escuro entre telas) */
+  background: linear-gradient(180deg, #7ec8ec 0%, #a6dcee 40%, #f7ead0 100%);
   color: var(--text-0);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -158,7 +159,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 26px;
-  background: radial-gradient(120% 120% at 50% 40%, #0c1424, #04060c 80%);
+  background: linear-gradient(180deg, #7ec8ec 0%, #b9e2ee 45%, #f7ead0 100%);
   transition: opacity 0.6s var(--ease), visibility 0.6s;
 }
 
@@ -169,30 +170,31 @@ button {
 }
 
 .boot__logo {
-  font-family: var(--font-title);
+  font-family: "Fraunces", Georgia, serif;
   font-weight: 900;
   font-size: clamp(30px, 6vw, 52px);
-  letter-spacing: 4px;
-  color: var(--text-0);
+  letter-spacing: 3px;
+  color: #4a3f33;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5);
 }
 .boot__logo span {
-  color: var(--brand-green);
+  color: #57905a;
   margin-left: 6px;
 }
 
 .boot__bar {
   width: min(300px, 70vw);
-  height: 4px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  height: 5px;
+  border-radius: 5px;
+  background: rgba(74, 63, 51, 0.16);
   overflow: hidden;
 }
 .boot__bar span {
   display: block;
   height: 100%;
   width: 40%;
-  border-radius: 4px;
-  background: linear-gradient(90deg, var(--brand-green), var(--brand-yellow));
+  border-radius: 5px;
+  background: linear-gradient(90deg, #6ba368, #f4b942);
   animation: boot-load 1.1s var(--ease-out) infinite;
 }
 @keyframes boot-load {
@@ -201,10 +203,11 @@ button {
 }
 
 .boot__hint {
-  color: var(--text-2);
+  color: #8a7a63;
   font-size: 14px;
   letter-spacing: 2px;
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 /* ============================================================
@@ -458,9 +461,9 @@ button {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: rgba(4, 6, 12, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(74, 63, 51, 0.32);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   animation: fade 0.3s var(--ease) both;
 }
 .modal-backdrop.closing { animation: fade 0.3s var(--ease) reverse both; }
@@ -472,12 +475,12 @@ button {
   max-height: 86vh;
   overflow-y: auto;
   padding: 30px;
-  border-radius: 24px;
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border-strong);
-  backdrop-filter: blur(24px) saturate(140%);
-  -webkit-backdrop-filter: blur(24px) saturate(140%);
-  box-shadow: var(--shadow-lg);
+  border-radius: 28px;
+  background: #fbf3df;
+  border: 3px solid #fffdf8;
+  color: #4a3f33;
+  font-family: "Nunito", system-ui, sans-serif;
+  box-shadow: 0 24px 60px rgba(90, 70, 45, 0.32);
   animation: modal-in 0.45s var(--ease) both;
 }
 @keyframes modal-in {
@@ -492,23 +495,24 @@ button {
   margin-bottom: 8px;
 }
 .modal__title {
-  font-family: var(--font-title);
-  font-weight: 800;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
   font-size: 24px;
   letter-spacing: 0.5px;
+  color: #4a3f33;
 }
 .modal__close {
   width: 38px;
   height: 38px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  background: rgba(74, 63, 51, 0.07);
+  border: 2px solid rgba(74, 63, 51, 0.14);
   font-size: 18px;
-  color: var(--text-1);
+  color: #8a7a63;
   transition: background 0.25s, transform 0.25s;
 }
-.modal__close:hover { background: rgba(255, 80, 80, 0.18); transform: rotate(90deg); }
-.modal__desc { color: var(--text-2); margin-bottom: 22px; font-size: 15px; }
+.modal__close:hover { background: rgba(209, 111, 69, 0.2); transform: rotate(90deg); }
+.modal__desc { color: #8a7a63; margin-bottom: 22px; font-size: 15px; }
 
 /* Linhas de configuração */
 .setting {
@@ -517,11 +521,11 @@ button {
   justify-content: space-between;
   gap: 16px;
   padding: 16px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(74, 63, 51, 0.12);
 }
 .setting:first-of-type { border-top: none; }
-.setting__label { font-weight: 600; letter-spacing: 0.5px; }
-.setting__label small { display: block; color: var(--text-3); font-size: 12px; font-weight: 400; }
+.setting__label { font-weight: 700; letter-spacing: 0.5px; }
+.setting__label small { display: block; color: #b9a888; font-size: 12px; font-weight: 400; }
 
 /* Toggle */
 .toggle {
@@ -529,8 +533,8 @@ button {
   width: 52px;
   height: 28px;
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--glass-border);
+  background: rgba(74, 63, 51, 0.2);
+  border: 1px solid rgba(74, 63, 51, 0.1);
   transition: background 0.3s var(--ease);
 }
 .toggle::after {
@@ -544,7 +548,7 @@ button {
   background: #fff;
   transition: transform 0.3s var(--ease);
 }
-.toggle.on { background: var(--brand-green); }
+.toggle.on { background: #6ba368; }
 .toggle.on::after { transform: translateX(24px); }
 
 /* Slider */
@@ -554,7 +558,7 @@ button {
   width: 160px;
   height: 6px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(74, 63, 51, 0.18);
   outline: none;
 }
 .slider::-webkit-slider-thumb {
@@ -562,8 +566,8 @@ button {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--brand-green);
-  box-shadow: 0 2px 8px var(--accent-glow);
+  background: #6ba368;
+  box-shadow: 0 2px 8px rgba(107, 163, 104, 0.5);
   cursor: pointer;
 }
 .slider::-moz-range-thumb {
@@ -571,7 +575,7 @@ button {
   height: 18px;
   border: none;
   border-radius: 50%;
-  background: var(--brand-green);
+  background: #6ba368;
   cursor: pointer;
 }
 
@@ -581,15 +585,15 @@ button {
   align-items: baseline;
   justify-content: space-between;
   padding: 12px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(74, 63, 51, 0.12);
 }
 .credits__row:first-child { border-top: none; }
-.credits__role { color: var(--text-2); font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
-.credits__name { font-weight: 700; }
+.credits__role { color: #8a7a63; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+.credits__name { font-weight: 800; }
 .credits__foot {
   margin-top: 22px;
   text-align: center;
-  color: var(--text-3);
+  color: #b9a888;
   font-size: 13px;
   line-height: 1.6;
 }
@@ -890,6 +894,52 @@ button {
 .hill-2 { fill: #82b56e; }
 .hill-1 { fill: #5f9350; }
 
+/* ---------- Overrides Ghibli para o MENU INICIAL ---------- */
+.menu-wrap .menu { position: relative; z-index: 1; }
+
+.theme-ghibli .brandmark { color: var(--g-ink); }
+.theme-ghibli .brandmark__dot {
+  background: var(--g-green);
+  box-shadow: 0 0 12px rgba(107, 163, 104, 0.7);
+}
+.theme-ghibli .menu__status { color: var(--g-ink-soft); }
+.theme-ghibli .menu__status b { color: var(--g-green-2); }
+
+.theme-ghibli .logo__kicker {
+  color: var(--g-terra-2);
+  border-color: rgba(209, 111, 69, 0.45);
+  background: rgba(255, 253, 248, 0.6);
+  backdrop-filter: none;
+}
+.theme-ghibli .logo__title {
+  color: var(--g-ink);
+  letter-spacing: -1px;
+  font-family: "Fraunces", Georgia, serif;
+  text-shadow: 0 3px 0 rgba(255, 255, 255, 0.55), 0 16px 34px rgba(90, 70, 45, 0.22);
+}
+.theme-ghibli .logo__title .accent {
+  background: linear-gradient(100deg, var(--g-green-2) 0%, var(--g-green) 40%, var(--g-sun) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 0 rgba(255, 255, 255, 0.45));
+}
+.theme-ghibli .logo__sub { color: #6b5d49; }
+
+.theme-ghibli .menu__bottom { color: var(--g-ink-soft); }
+.theme-ghibli .kbd {
+  background: #fffdf8;
+  border-color: var(--g-line);
+  color: var(--g-ink);
+}
+.theme-ghibli .btn__icon { background: rgba(74, 63, 51, 0.07); }
+.theme-ghibli .btn:hover .btn__icon { background: rgba(74, 63, 51, 0.12); }
+.theme-ghibli .btn--primary .btn__icon { background: rgba(255, 255, 255, 0.24); box-shadow: none; }
+.theme-ghibli .btn__arrow { color: #b9a888; }
+.theme-ghibli .btn:hover .btn__arrow { color: var(--g-green-2); }
+.theme-ghibli .btn--primary .btn__arrow,
+.theme-ghibli .btn--primary:hover .btn__arrow { color: rgba(255, 255, 255, 0.95); }
+
 /* ---------- Overrides Ghibli para a criação de personagem ---------- */
 .theme-ghibli .cc { position: relative; z-index: 1; }
 
@@ -982,7 +1032,20 @@ button {
 
 .theme-ghibli .cc__hint { color: var(--g-ink-soft); }
 
-/* Botão Ghibli (arredondado, quente) */
+/* Botão Ghibli (arredondado, quente) — também nos modais */
+.modal .btn {
+  border-radius: 18px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  background: #fffdf8;
+  border: 2px solid rgba(74, 63, 51, 0.16);
+  color: #4a3f33;
+  box-shadow: 0 8px 20px rgba(90, 70, 45, 0.16);
+  backdrop-filter: none;
+}
+.modal .btn::before, .modal .btn::after { display: none; }
+.modal .btn:hover { border-color: rgba(74, 63, 51, 0.3); transform: translateY(-2px); }
+
 .theme-ghibli .btn {
   border-radius: 18px;
   font-family: "Nunito", sans-serif;
@@ -1206,6 +1269,18 @@ button {
 }
 .world-canvas:active { cursor: grabbing; }
 
+/* Fotografia de filme: vinheta suave + luz quente nas bordas superiores */
+.world-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    radial-gradient(130% 100% at 50% 45%, transparent 62%, rgba(60, 40, 20, 0.18) 100%),
+    linear-gradient(180deg, rgba(255, 214, 140, 0.10) 0%, transparent 22%);
+}
+
 /* Overlay da HUD */
 .hud {
   position: absolute;
@@ -1333,12 +1408,13 @@ button {
 }
 .toast {
   padding: 12px 20px;
-  border-radius: 12px;
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border-strong);
-  backdrop-filter: blur(16px);
-  box-shadow: var(--shadow-md);
-  font-weight: 600;
+  border-radius: 14px;
+  background: rgba(62, 52, 41, 0.94);
+  border: 2px solid rgba(255, 253, 248, 0.35);
+  color: #fbf3df;
+  font-family: "Nunito", system-ui, sans-serif;
+  box-shadow: 0 14px 34px rgba(60, 45, 25, 0.35);
+  font-weight: 700;
   letter-spacing: 0.5px;
   animation: toast-in 0.4s var(--ease) both;
 }

@@ -5,9 +5,10 @@
    ============================================================ */
 
 export const GAME = Object.freeze({
-  name: "Brasil Online",
+  project: "GAME MINHA VIDA",   // nome do projeto (metadados)
+  name: "Brasil Online",         // nome exibido do jogo
   version: "0.1.0",
-  build: "mvp-etapa-1",
+  build: "mvp-etapa-4",
   storageKey: "brasil-online:save",
   settingsKey: "brasil-online:settings",
 });

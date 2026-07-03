@@ -1,7 +1,10 @@
-# 🇧🇷 Brasil Online
+# 🎮 GAME MINHA VIDA
 
-Protótipo **frontend** de um MMORPG de mundo aberto brasileiro. Roda 100% no
-navegador — **sem backend, sem banco de dados**. Dados em memória + LocalStorage.
+> **Projeto:** GAME MINHA VIDA · **Jogo:** *Brasil Online*
+
+Protótipo **frontend** de um MMORPG de mundo aberto brasileiro (*Brasil Online*).
+Roda 100% no navegador — **sem backend, sem banco de dados**. Dados em memória +
+LocalStorage.
 
 > Construído com HTML5, CSS3, JavaScript puro, Three.js e WebGL. Sem frameworks.
 
